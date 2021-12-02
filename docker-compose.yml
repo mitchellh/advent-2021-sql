@@ -1,0 +1,9 @@
+version: '2'
+services:
+    postgres:
+        image: "postgres:14"
+        ports:
+            - "5432:5432"
+        environment:
+            - POSTGRES_DB=dev
+            - POSTGRES_HOST_AUTH_METHOD=trust
