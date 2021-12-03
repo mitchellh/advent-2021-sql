@@ -12,7 +12,9 @@ CREATE TABLE day03.inputs (
 \COPY day03.inputs (value) FROM 'day03/input.txt';
 
 -- characters: split string into one row for each character
---
+-- common: use mode() aggregate to find most common value for each index
+-- result: combine most common values, convert to binary, convert to int
+--   to find epsilon, I pad with 1 and then bit flip to get the least common.
 WITH characters AS (
   SELECT  id,
           char,
