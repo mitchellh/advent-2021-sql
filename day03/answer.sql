@@ -9,12 +9,13 @@ CREATE TABLE day03.inputs (
 );
 
 -- Use \COPY rather than COPY so its client-side in psql
-\COPY day03.inputs (value) FROM 'day03/input.txt';
+\COPY day03.inputs (value) FROM 'day03/sample.txt';
 
 -- characters: split string into one row for each character
 -- common: use mode() aggregate to find most common value for each index
 -- result: combine most common values, convert to binary, convert to int
 --   to find epsilon, I pad with 1 and then bit flip to get the least common.
+\echo 'PART 1 RESULTS';
 WITH characters AS (
   SELECT  id,
           char,
