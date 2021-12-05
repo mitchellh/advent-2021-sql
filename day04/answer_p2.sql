@@ -15,8 +15,8 @@ CREATE TABLE day04.input_boards (
 );
 
 -- Use \COPY rather than COPY so its client-side in psql
-\COPY day04.input_numbers FROM 'day04/sample_numbers.txt' WITH (DELIMITER 'X');
-\COPY day04.input_boards (line) FROM 'day04/sample_boards.txt' WITH (DELIMITER 'X');
+\COPY day04.input_numbers FROM 'day04/input_numbers.txt' WITH (DELIMITER 'X');
+\COPY day04.input_boards (line) FROM 'day04/input_boards.txt' WITH (DELIMITER 'X');
 
 WITH numbers AS (
   -- convert our line of draws into a list of number and order
@@ -120,11 +120,15 @@ WITH numbers AS (
   JOIN   winning_col w ON w.board_id = rem.board_id AND w.col = rem.col
   JOIN   numbers n ON n.index = w.most_recent)
 ), board_order AS (
-  SELECT board_id,
-         min(winning_pick) as earliest_win
-  FROM   possible_answers
+  -- the order in which boards won
+  SELECT   board_id,
+           min(winning_pick) as earliest_win
+  FROM     possible_answers
   GROUP BY board_id
 )
 SELECT   *
-FROM     board_order
-ORDER BY earliest_win DESC;
+FROM     board_order bo
+JOIN     possible_answers a ON a.board_id = bo.board_id
+                           AND a.winning_pick = bo.earliest_win
+ORDER BY bo.earliest_win DESC
+LIMIT    1;
