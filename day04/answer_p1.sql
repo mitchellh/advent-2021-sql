@@ -15,11 +15,8 @@ CREATE TABLE day04.input_boards (
 );
 
 -- Use \COPY rather than COPY so its client-side in psql
-\COPY day04.input_numbers FROM 'day04/input_numbers.txt' WITH (DELIMITER 'X');
-\COPY day04.input_boards (line) FROM 'day04/input_boards.txt' WITH (DELIMITER 'X');
-
---\COPY day04.input_numbers FROM 'day04/sample_numbers.txt' WITH (DELIMITER 'X');
---\COPY day04.input_boards (line) FROM 'day04/sample_boards.txt' WITH (DELIMITER 'X');
+\COPY day04.input_numbers FROM 'day04/sample_numbers.txt' WITH (DELIMITER 'X');
+\COPY day04.input_boards (line) FROM 'day04/sample_boards.txt' WITH (DELIMITER 'X');
 
 WITH numbers AS (
   -- convert our line of draws into a list of number and order
@@ -59,7 +56,6 @@ WITH numbers AS (
   -- all rows ordered by the one that won first
   SELECT   board_id,
            row,
-           sum(pick_order),
            max(pick_order) as most_recent
   FROM     boards_fk
   GROUP BY board_id, row
@@ -68,7 +64,6 @@ WITH numbers AS (
   -- all columns ordered by the one that won first
   SELECT   board_id,
            col,
-           sum(pick_order),
            max(pick_order) as most_recent
   FROM     boards_fk
   GROUP BY board_id, col
@@ -81,7 +76,6 @@ WITH numbers AS (
             sum(n.number) as remainder_sum
   FROM      winning_row w
   LEFT JOIN boards_fk b ON  b.board_id = w.board_id
-                        AND b.row <> w.row
                         AND b.pick_order > w.most_recent
   LEFT JOIN numbers n   ON n.index = b.pick_order
   GROUP BY  w.board_id, w.row, w.most_recent
@@ -94,7 +88,6 @@ WITH numbers AS (
             sum(n.number) as remainder_sum
   FROM      winning_col w
   LEFT JOIN boards_fk b ON  b.board_id = w.board_id
-                        AND b.col <> w.col
                         AND b.pick_order > w.most_recent
   LEFT JOIN numbers n   ON n.index = b.pick_order
   GROUP BY  w.board_id, w.col, w.most_recent
@@ -108,10 +101,9 @@ WITH numbers AS (
          rem.remainder_sum,
          n.number * rem.remainder_sum as answer
   FROM   winning_row_unmarked rem
-  JOIN   winning_row w ON w.board_id = rem.board_id
+  JOIN   winning_row w ON w.board_id = rem.board_id AND w.row = rem.row
   JOIN   numbers n ON n.index = w.most_recent
-  ORDER BY rem.winning_pick
-  LIMIT  1)
+  ORDER BY rem.winning_pick)
 
   UNION
 
@@ -122,10 +114,9 @@ WITH numbers AS (
          rem.remainder_sum,
          n.number * rem.remainder_sum as answer
   FROM   winning_col_unmarked rem
-  JOIN   winning_col w ON w.board_id = rem.board_id
+  JOIN   winning_col w ON w.board_id = rem.board_id AND w.col = rem.col
   JOIN   numbers n ON n.index = w.most_recent
-  ORDER BY rem.winning_pick
-  LIMIT  1)
+  ORDER BY rem.winning_pick)
 )
 SELECT   *
 FROM     possible_answers
