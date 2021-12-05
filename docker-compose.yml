@@ -1,9 +1,11 @@
 version: '2'
 services:
     postgres:
-        image: "postgres:14"
+        image: "kartoza/postgis:14"
         ports:
             - "5432:5432"
         environment:
             - POSTGRES_DB=dev
+            - POSTGRES_USER=dev
+            - POSTGRES_PASS=dev
             - POSTGRES_HOST_AUTH_METHOD=trust
