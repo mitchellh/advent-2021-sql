@@ -15,8 +15,11 @@ CREATE TABLE day04.input_boards (
 );
 
 -- Use \COPY rather than COPY so its client-side in psql
-\COPY day04.input_numbers FROM 'day04/sample_numbers.txt' WITH (DELIMITER 'X');
-\COPY day04.input_boards (line) FROM 'day04/sample_boards.txt' WITH (DELIMITER 'X');
+\COPY day04.input_numbers FROM 'day04/input_numbers.txt' WITH (DELIMITER 'X');
+\COPY day04.input_boards (line) FROM 'day04/input_boards.txt' WITH (DELIMITER 'X');
+
+--\COPY day04.input_numbers FROM 'day04/sample_numbers.txt' WITH (DELIMITER 'X');
+--\COPY day04.input_boards (line) FROM 'day04/sample_boards.txt' WITH (DELIMITER 'X');
 
 WITH numbers AS (
   -- convert our line of draws into a list of number and order
@@ -105,8 +108,10 @@ WITH numbers AS (
          rem.remainder_sum,
          n.number * rem.remainder_sum as answer
   FROM   winning_row_unmarked rem
-  JOIN   winning_row w ON w.board_id = rem.board_id AND w.row = rem.row
-  JOIN   numbers n ON n.index = w.most_recent)
+  JOIN   winning_row w ON w.board_id = rem.board_id
+  JOIN   numbers n ON n.index = w.most_recent
+  ORDER BY rem.winning_pick
+  LIMIT  1)
 
   UNION
 
@@ -117,14 +122,12 @@ WITH numbers AS (
          rem.remainder_sum,
          n.number * rem.remainder_sum as answer
   FROM   winning_col_unmarked rem
-  JOIN   winning_col w ON w.board_id = rem.board_id AND w.col = rem.col
-  JOIN   numbers n ON n.index = w.most_recent)
-), board_order AS (
-  SELECT board_id,
-         min(winning_pick) as earliest_win
-  FROM   possible_answers
-  GROUP BY board_id
+  JOIN   winning_col w ON w.board_id = rem.board_id
+  JOIN   numbers n ON n.index = w.most_recent
+  ORDER BY rem.winning_pick
+  LIMIT  1)
 )
 SELECT   *
-FROM     board_order
-ORDER BY earliest_win DESC;
+FROM     possible_answers
+ORDER BY winning_pick
+LIMIT    1 ;
