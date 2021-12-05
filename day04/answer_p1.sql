@@ -18,9 +18,6 @@ CREATE TABLE day04.input_boards (
 \COPY day04.input_numbers FROM 'day04/input_numbers.txt' WITH (DELIMITER 'X');
 \COPY day04.input_boards (line) FROM 'day04/input_boards.txt' WITH (DELIMITER 'X');
 
---\COPY day04.input_numbers FROM 'day04/sample_numbers.txt' WITH (DELIMITER 'X');
---\COPY day04.input_boards (line) FROM 'day04/sample_boards.txt' WITH (DELIMITER 'X');
-
 WITH numbers AS (
   -- convert our line of draws into a list of number and order
   SELECT index, number::int
@@ -100,6 +97,7 @@ WITH numbers AS (
   GROUP BY  w.board_id, w.col, w.most_recent
   ORDER BY  w.most_recent
 ), possible_answers AS (
+  -- get the possible col and row answer
   (SELECT w.board_id,
          'row: ' || w.row as desc,
          w.most_recent as winning_pick,
@@ -126,10 +124,7 @@ WITH numbers AS (
   ORDER BY rem.winning_pick
   LIMIT  1)
 )
-SELECT * FROM possible_answers;
-/*
 SELECT   *
 FROM     possible_answers
 ORDER BY winning_pick
 LIMIT    1 ;
-*/
