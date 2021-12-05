@@ -105,10 +105,8 @@ WITH numbers AS (
          rem.remainder_sum,
          n.number * rem.remainder_sum as answer
   FROM   winning_row_unmarked rem
-  JOIN   winning_row w ON w.board_id = rem.board_id
-  JOIN   numbers n ON n.index = w.most_recent
-  ORDER BY rem.winning_pick
-  LIMIT  1)
+  JOIN   winning_row w ON w.board_id = rem.board_id AND w.row = rem.row
+  JOIN   numbers n ON n.index = w.most_recent)
 
   UNION
 
@@ -119,12 +117,10 @@ WITH numbers AS (
          rem.remainder_sum,
          n.number * rem.remainder_sum as answer
   FROM   winning_col_unmarked rem
-  JOIN   winning_col w ON w.board_id = rem.board_id
-  JOIN   numbers n ON n.index = w.most_recent
-  ORDER BY rem.winning_pick
-  LIMIT  1)
+  JOIN   winning_col w ON w.board_id = rem.board_id AND w.col = rem.col
+  JOIN   numbers n ON n.index = w.most_recent)
 )
 SELECT   *
 FROM     possible_answers
 ORDER BY winning_pick
-LIMIT    1 ;
+LIMIT    1;
