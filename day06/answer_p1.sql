@@ -17,8 +17,7 @@ WITH RECURSIVE initial AS (
          LATERAL unnest(regexp_split_to_array(line, ',')) as timer
 ), spawn AS (
   -- base case: our initial timers, and a countdown
-  SELECT row_number() OVER (ORDER BY 1) as id,
-         256 as days_remaining,
+  SELECT 80 as days_remaining,
          timer
   FROM   initial
 
@@ -27,8 +26,7 @@ WITH RECURSIVE initial AS (
   -- recursive case: decrement timer, spawn
   -- terminating case: timer is 0
 
-  SELECT row_number() OVER (ORDER BY 1) as id,
-         days_remaining - 1,
+  SELECT days_remaining - 1,
          newtimer
   FROM   spawn,
          LATERAL unnest(CASE
