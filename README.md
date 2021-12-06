@@ -10,6 +10,10 @@ are likely much _better_ ways (by various definitions) to reach the same
 answer. I'd love to hear about those (make an issue) but I won't be merging
 any changes since this represents _my_ approach.
 
+**I may not finish!** December is a busy time, I'm doing these as I can,
+but I'm not making any commitment to finishing. If I don't finish, I'll
+hopefully retroactively solve the problems, but no promises. 😜
+
 ## Goals
 
 I had a set of goals with each problem:
@@ -28,6 +32,12 @@ If I was creeping up towards my timebox, I broke some of these rules in
 the interest of getting to an answer. However, I did my best to stick with
 the rules as well as possible. For example, in week 1, I achieved all of the
 above except I had to drop into plpgsql for 1 part of 1 problem (on day 3).
+
+## Explanations
+
+I uploaded video explanations for each day I completed to YouTube:
+
+https://www.youtube.com/watch?v=aIVBYKk5adk&list=PL4z1WbdlT5GJqdGnuvoqw4dOdB2etJ6sd
 
 ## Usage
 
