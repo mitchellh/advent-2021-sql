@@ -12,7 +12,7 @@ CREATE TABLE day07.inputs (
 \COPY day07.inputs (line) FROM 'day07/input.txt';
 
 \echo 'PART 1 RESULTS';
-WITH RECURSIVE pos AS (
+WITH pos AS (
   -- turn input into row-based ints
   SELECT x::int
   FROM   day07.inputs,
@@ -35,7 +35,7 @@ ORDER BY fuel
 LIMIT    1;
 
 \echo 'PART 2 RESULTS';
-WITH RECURSIVE pos AS (
+WITH pos AS (
   -- turn input into row-based ints
   SELECT x::int
   FROM   day07.inputs,
