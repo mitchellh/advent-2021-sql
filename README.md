@@ -24,7 +24,8 @@ I had a set of goals with each problem:
   to transform the data prior to the statement. Huge CTEs to simulate temporary
   tables is totally fine.
 
-* No custom functions (no plpgsql).
+* No custom functions (no plpgsql). It's too easy to think _iteratively_ with 
+  custom functions and one of my goals is to think _relationally_. 
 
 * Timebox to 30 minutes per problem for both parts.
 
